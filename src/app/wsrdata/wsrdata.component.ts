@@ -688,7 +688,7 @@ export class WSRDATAComponent implements OnInit {
                 result = '#FFBA80';
                 break;
             case 'Y':
-                result = '#F6F531';
+                result = '#F6F532';
                 break;
             default:
                 result = 'transparent';
