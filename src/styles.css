@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .grid-height-for-ie{height: calc(100vh - (85px));}
+}
+
+app-root > .k-icon.k-i-loading { font-size: 64px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.body {background-color: #f3f3f3;}  
+.filter-align a {top: 15px;}  
+.route-header-align a {left: -15px;}  
+.table-section {display: block;height: 0px;padding: 5px;display: flex;color: #000;margin-top: 10px;}  
+.table-footer {position: fixed;left: 0;bottom: 0;width: 100%;height: 30px;background: #5c9269;color: white;display: -webkit-inline-box;display: -ms-inline-flexbox;padding: 10px;border-top: 0px;}
+.k-grid-column-menu {color: white !important;}  
+.k-grid-column-menu:hover {color: rgba(39, 110, 132, 0.95) !important;}  
+.k-grid-header .k-grid-filter, .k-grid-header .k-header-column-menu{top: 0px;}
+tbody tr:hover {background: darkgray !important;} 
+.k-grid table {table-layout: fixed;}
+:host {font-family: Arial, Helvetica, sans-serif;}
+.k-grid .k-grid-content tr td {white-space: nowrap;text-overflow: ellipsis;}
+.example-config { margin: 0 0 20px; padding: 20px; background-color: rgba(0,0,0,.03); border: 1px solid rgba(0,0,0,.08); }
+.k-grid .no-padding {padding: 0;}
+.k-grid .whole-cell {display: block;padding: 15px 15px;}
+.k-grid .whole-cells {display: block;padding: 10px 12px;}
+.k-icon-32 {font-size: 32px; /* Sets icon size to 32px */}

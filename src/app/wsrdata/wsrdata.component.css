@@ -1,0 +1,26 @@
+.k-heading{
+    color: white;
+  }
+
+  .position{
+  border-style: solid;
+  border-color: inherit;
+  outline: 0;
+  font-weight: inherit;
+  text-align: center;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.container:after {
+    content: "";
+    display: block;
+    clear: both;
+    float: left;
+}
+
+.child {
+    float: left;
+}

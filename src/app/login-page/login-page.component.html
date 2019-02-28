@@ -1,0 +1,53 @@
+<DIV class="container fluid">
+    <DIV class="col-lg-4 col-lg-offset-4">
+        <DIV class="panel panel-default">
+            <DIV class="panel-heading" style="font-size: medium;background-color: dodgerblue">
+                <STRONG>
+                    IBM Weekly Status Report Login
+                </STRONG>
+            </DIV>
+            <DIV class="panel-body">
+                <form #OAuthForm="ngForm">
+                    <DIV class="form-group">
+                        <DIV class="col-lg-09 text-center">
+                            <h3>
+                                <strong>{{OAuth}} Login Page</strong>
+                            </h3>
+                        </DIV>
+                        <DIV class="form-group">
+                            <DIV style="text-align: left">
+                                <label class="control-label" style="font-size: medium">Username</label>
+                                <DIV class="input-group">
+                                    <span class="input-group-addon" style="width: 35px">
+                                        <span class="glyphicon glyphicon-user" data-placement="right" title="Enter Username "
+                                              aria-hidden="true"></span>
+                                    </span>
+                                    <input #focusOnUserName autofocus type="text" class="form-control" placeholder="Username" [(ngModel)]="model.username" name="username" #username="ngModel" required style="height: 30px" />
+                                </DIV>
+
+                            </DIV>
+                        </DIV>
+
+                        <DIV class="form-group">
+                            <DIV style="text-align: left">
+                                <label class="password" style="font-size: medium">Password</label>
+                                <DIV class="input-group">
+                                    <span class="input-group-addon" style="width: 35px">
+                                        <span class="glyphicon glyphicon-lock" data-placement="right" title="Enter correct password "
+                                              aria-hidden="true"></span>
+                                    </span>
+                                    <input type="password" class="form-control" placeholder="Password" [(ngModel)]="model.password" minlength="7" maxlength="128" name="password" #pwsd="ngModel"
+                                           required style="height: 30px" />
+                                </DIV>
+                                <span *ngIf="pwsd.errors?.minlength " style="color: red">Password must be at least 7 characters long.</span>
+                            </DIV>
+                        </DIV>
+                        <div class="form-group" style="text-align: center">
+                            <button type="submit" [disabled]="!OAuthForm.form.valid" class="btn btn-primary" (click)="login()">Login</button>
+                        </div>
+                    </DIV>
+                </form>
+            </DIV>            
+        </DIV>
+    </DIV>
+</DIV>

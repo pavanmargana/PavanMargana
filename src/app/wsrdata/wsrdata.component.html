@@ -1,0 +1,913 @@
+<app-navbar></app-navbar>
+<div *ngIf='validate'>
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+      <a href="#OverView" data-toggle="tab">Overview</a>
+    </li>
+    <li role="presentation">
+      <a href="#WSRDATA" role="tab" data-toggle="tab">Weekly Status Report</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane fade in active" id="OverView">
+      <div class="panel-body">
+        <label style="margin-left:10px;margin-right:10px">
+          <strong>Reporting Week : </strong>
+        </label>
+        <kendo-dropdownlist [data]="_DatesList" (valueChange)="SelectDate($event)" [(ngModel)]="defaultItem"></kendo-dropdownlist>
+        &nbsp;&nbsp;
+
+        <label>Red (High Risk) :
+          <a href='javascript:void(0);' (click)="displaygrid('R');">{{_CRR}}</a> &nbsp;&nbsp;
+        </label>
+
+        <label>Yellow (Low Risk) :
+          <a href='javascript:void(0);' (click)="displaygrid('Y');">{{_CYR}}</a> &nbsp;&nbsp;
+        </label>
+
+        <label>Green (No Risk) :
+          <a href='javascript:void(0);' (click)="displaygrid('G');">{{_CGR}}</a> &nbsp;&nbsp;
+        </label>
+        <div *ngIf='!Showgrid' style="margin-top:20px;">
+          <div class="container" style="margin-left: 0px;margin-right: 0px">
+            <div class="child" style="margin-right: 10px">
+              <table style="border-collapse: collapse;border: 2px solid rgb(200, 200, 200);letter-spacing: 1px;font-family: sans-serif;font-size: 1.1rem;width: 280px;height: 280px;">
+                <thead style="background-color: #dbdf19;color: #fff;">
+                  <tr style="background-color: #52a012;color:#fff">
+                    <td colspan="3" scope="colgroup" style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">
+                      <label>In-progress SDN by Phase</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td scope="col" style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">Phase</td>
+                    <td scope="col" style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">Count</td>
+                    <td scope="col" style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">%</td>
+                  </tr>
+                </thead>
+                <tbody style="background-color: #e4f0f5;">
+                  <tr>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">10/20/SFD</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNPhase!=undefined?DonutSDNPhase[0].value:0}}</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNPhase!=undefined?(DonutSDNPhase[0].value/sdnphasetotal*100).toFixed(2):0
+                      }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">TSD</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNPhase!=undefined?DonutSDNPhase[1].value:0}}</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNPhase!=undefined?(DonutSDNPhase[1].value/sdnphasetotal*100).toFixed(2):0
+                      }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">CUT/UIT</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNPhase!=undefined?DonutSDNPhase[2].value:0}}</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNPhase!=undefined?(DonutSDNPhase[2].value/sdnphasetotal*100).toFixed(2):0}}</td>
+                  </tr>
+                  <tr>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">SIT/UAT</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNPhase!=undefined?DonutSDNPhase[3].value:0}}</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNPhase!=undefined?(DonutSDNPhase[3].value/sdnphasetotal*100).toFixed(2):0
+                      }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">PIR</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNPhase!=undefined?DonutSDNPhase[4].value:0}}</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNPhase!=undefined?(DonutSDNPhase[4].value/sdnphasetotal*100).toFixed(2):0
+                      }}
+                    </td>
+                  </tr>
+                  <tr style="background-color: #dbdf19;color: #fff">
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">Total</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNPhase!=undefined?sdnphasetotal:0}}</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">100%</td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <div class="child" style="margin-right: 10px">
+              <kendo-chart style="width:300px;height: 280px;background: transparent">
+                <kendo-chart-title text="Phase Count" style="margin-bottom: 4px;color:yellowgreen" align="right"></kendo-chart-title>
+                <kendo-chart-legend [visible]="true" position="bottom"></kendo-chart-legend>
+                <kendo-chart-tooltip>
+                  <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                    {{value}}SDN's
+                  </ng-template>
+                </kendo-chart-tooltip>
+                <kendo-chart-series>
+                  <kendo-chart-series-item type="pie" [data]="DonutSDNPhase" field="value" categoryField="category">
+                    <kendo-chart-series-item-labels [content]="labelPhaseffContent" color="#191919" background="none">
+                    </kendo-chart-series-item-labels>
+                  </kendo-chart-series-item>
+                </kendo-chart-series>
+              </kendo-chart>
+            </div>
+            <div class="child" style="margin-right: 0px;margin-bottom: 20px">
+              <kendo-chart style="width:500px;height: 280px;background: transparent">
+                <kendo-chart-title text="Trend of SDN by Phases"></kendo-chart-title>
+                <kendo-chart-legend [visible]="true" position="bottom"></kendo-chart-legend>
+                <kendo-chart-category-axis>
+                  <kendo-chart-category-axis-item [categories]="_DatesList">
+                  </kendo-chart-category-axis-item>
+                </kendo-chart-category-axis>
+                <kendo-chart-series>
+                  <kendo-chart-series-item type="line" [data]="linedata[0]" name="10/20/SFD">
+                  </kendo-chart-series-item>
+                  <kendo-chart-series-item type="line" [data]="linedata[1]" name="TSD">
+                  </kendo-chart-series-item>
+                  <kendo-chart-series-item type="line" [data]="linedata[2]" name="CUT/UIT">
+                  </kendo-chart-series-item>
+                  <kendo-chart-series-item type="line" [data]="linedata[3]" name="SIT/UAT">
+                  </kendo-chart-series-item>
+                  <kendo-chart-series-item type="line" [data]="linedata[4]" name="PIR">
+                  </kendo-chart-series-item>
+                </kendo-chart-series>
+              </kendo-chart>
+            </div>
+          </div>
+          <div class="container" style="margin-left: 0px">
+            <div class="child" style="margin-right: 15px">
+              <kendo-chart style="width:400px;height: 280px;background: transparent;">
+                <kendo-chart-title text="Effort Count" style="margin-bottom: 4px;color:yellowgreen" align="left"></kendo-chart-title>
+                <kendo-chart-legend [visible]="true" position="bottom"></kendo-chart-legend>
+                <kendo-chart-tooltip>
+                  <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                    {{value}} Effort
+                  </ng-template>
+                </kendo-chart-tooltip>
+                <kendo-chart-series>
+                  <kendo-chart-series-item type="pie" [data]="DonutSDNEffort" field="value" categoryField="category"
+                    pieSize='5'>
+                    <kendo-chart-series-item-labels [content]="labelPhaseffContent" color="#191919" background="none">
+                    </kendo-chart-series-item-labels>
+                  </kendo-chart-series-item>
+                </kendo-chart-series>
+              </kendo-chart>
+            </div>
+            <div class="child">
+              <table style="border-collapse: collapse;border: 2px solid rgb(200, 200, 200);letter-spacing: 1px;font-family: sans-serif;font-size: 1.1rem;width: 400px;height: 280px;">
+                <thead style="background-color: #dbdf19;color: #fff;">
+                  <tr style="background-color: #52a012;color:#fff">
+                    <td colspan="3" scope="colgroup" style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">
+                      <label>Available Effort of In-progress SDN by Phase</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td scope="col" style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">Phase</td>
+                    <td scope="col" style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">Count</td>
+                    <td scope="col" style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">%</td>
+                  </tr>
+                </thead>
+                <tbody style="background-color: #e4f0f5;">
+                  <tr>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">10/20/SFD</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNEffort!=undefined?DonutSDNEffort[0].value:0}}</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNEffort!=undefined?(DonutSDNEffort[0].value/sdneffortotal*100).toFixed(2):0
+                      }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">TSD</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNEffort!=undefined?DonutSDNEffort[1].value:0}}</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNEffort!=undefined?(DonutSDNEffort[1].value/sdneffortotal*100).toFixed(2):0
+                      }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">CUT/UIT</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNEffort!=undefined?DonutSDNEffort[2].value:0}}</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNEffort!=undefined?(DonutSDNEffort[2].value/sdneffortotal*100).toFixed(2):0
+                      }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">SIT/UAT</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNEffort!=undefined?DonutSDNEffort[3].value:0}}</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNEffort!=undefined?(DonutSDNEffort[3].value/sdneffortotal*100).toFixed(2):0
+                      }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">PIR</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNEffort!=undefined?DonutSDNEffort[4].value:0}}</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNEffort!=undefined?(DonutSDNEffort[4].value/sdneffortotal*100).toFixed(2):0
+                      }}
+                    </td>
+                  </tr>
+                  <tr style="background-color: #dbdf19;color: #fff">
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">Total</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">{{DonutSDNPhase!=undefined?sdneffortotal:0}}</td>
+                    <td style=" border: 1px solid rgb(190, 190, 190);padding: 5px 10px;text-align: center;">100%</td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="Showgrid" style="margin-bottom: 20px">
+        <kendo-grid [data]="gridOVData" style="width:device-width; position:relative; max-height: 700px;" class="grid-height-for-ie"
+          [sortable]="true" [scrollable]="true" [resizable]="true" textalign="center" [navigable]="true" [reorderable]="true">
+          <kendo-grid-column-group title="SUMMARY OF STATUS" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <kendo-grid-column field="SDN_No" title="SDN_No" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+              width="140" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+                <span title="{{dataItem.REPORTING_DATE}}">{{dataItem.SDN_No}}</span>
+              </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column field="REPORTING_DATE" title="REPORTING_DATE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+              width="200" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+                <span title="{{dataItem.REPORTING_DATE}}">{{dataItem.REPORTING_DATE}}</span>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="PROJECT_HEALTH" title="PROJECT_HEALTH" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+              width="140" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+                <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.PROJECT_HEALTH)"></span>
+              </ng-template>
+            </kendo-grid-column>
+          </kendo-grid-column-group>
+          <kendo-grid-column-group title="RAG-DETAIL STATUS" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <kendo-grid-column field="RISK1" title="RISK1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+              width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+                <span title="{{dataItem.RISK1}}">{{dataItem.RISK1}}</span>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="ISSUE1" title="ISSUE1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+              width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+                <span title="{{dataItem.ISSUE1}}">{{dataItem.ISSUE1}}</span>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="DELIVERABLE2" title="DELIVERABLE2" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+              width="120" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+                <span title="{{dataItem.DELIVERABLE2}}">{{dataItem.DELIVERABLE2}}</span>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="SECOND_MILESTONE" title="SECOND_MILESTONE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+              width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+                <span title="{{dataItem.SECOND_MILESTONE}}">{{dataItem.SECOND_MILESTONE}}</span>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="EFFORT1" title="EFFORT1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+              width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+                <span title="{{dataItem.EFFORT1}}">{{dataItem.EFFORT1}}</span>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="DEFECT_DEPENDENCY1" title="DEFECT_DEPENDENCY1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+              width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+                <span title="{{dataItem.DEFECT_DEPENDENCY1}}">{{dataItem.DEFECT_DEPENDENCY1}}</span>
+              </ng-template>
+            </kendo-grid-column>
+          </kendo-grid-column-group>
+        </kendo-grid>
+      </div>
+    </div>
+
+    <div class="tab-pane fade " id="WSRDATA">
+      <kendo-grid [data]="gridData" style="width:device-width; position:relative; max-height: calc(100vh - (200px));"
+        [pageSize]="gridState.take" [skip]="gridState.skip" class="grid-height-for-ie" [sort]="gridState.sort" [filter]="gridState.filter"
+        filterable="menu" [sortable]="true" [scrollable]="true" [resizable]="true" (dataStateChange)="onStateChange($event)"
+        (edit)="editHandler($event)" (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
+        textalign="center" [columnMenu]="true" (add)="addHandler($event)" [navigable]="true" [reorderable]="true"
+        (cellClick)="cellClickHandler($event)">
+
+        <ng-template kendoGridToolbarTemplate>
+          <button style="margin-left: 25px;width:100px" class=" btn btn-success" kendoGridAddCommand>Add new</button>
+          <button type="button" kendoGridExcelCommand icon="file-excel">Download Weekly Status Report</button>
+          <button type="button" style="float:right;width:100px" [class.disabled]="isClickedOnce" class=" btn btn-primary"
+            (click)="Upload()">Upload</button>
+          <input type="file" class="form-control" #myInput placeholder="Select File" name="filename" (change)="incomingfile($event)"
+            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+            style="width:350px;float:right;margin-right:25px" />
+        </ng-template>
+
+        <kendo-grid-column-group title="Command" [hidden]="hidden" [locked]="true" [columnMenu]="false" class="position"
+          [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-command-column title="Operation" [locked]="true" [columnMenu]="false" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+              <span *ngIf='CRUDOperation(dataItem,isNew)'>
+                <button kendoGridEditCommand [primary]="true">Edit</button>
+                <button kendoGridRemoveCommand>Delete</button>
+                <button kendoGridSaveCommand [disabled]="formGroup?.invalid">{{ isNew ? 'Add' : 'Update' }}</button>
+                <button kendoGridCancelCommand>{{ isNew ? 'Discard changes' : 'Cancel' }}</button>
+              </span>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title=" " [columnMenu]="false" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="SDN_eSDN" title="SDN_eSDN" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="130" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.SDN_eSDN}}">{{dataItem.SDN_eSDN}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="SDN_No" title="SDN_No" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="140" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="HIGH LEVEL - SUMMARY OF STATUS" class="position" [reorderable]="false"
+          [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="TITLE" title="TITLE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.TITLE}}">{{dataItem.TITLE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="REPORTING_DATE" title="REPORTING_DATE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.REPORTING_DATE}}" class="whole-cells" [style.backgroundColor]="colorweekCode(dataItem.REPORTING_DATE)">{{dataItem.REPORTING_DATE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="CODE_CONVERSION" title="CODE_CONVERSION" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="170" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.CODE_CONVERSION}}">{{dataItem.CODE_CONVERSION}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="PROJECT_MANAGER" title="PROJECT_MANAGER" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="160" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.PROJECT_MANAGER}}">{{dataItem.PROJECT_MANAGER}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="IBM_PROJECT_LEAD" title="IBM_PROJECT_LEAD" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="150" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.IBM_PROJECT_LEAD}}">{{dataItem.IBM_PROJECT_LEAD}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="IBM_TECHNICAL_LEAD" title="IBM_TECHNICAL_LEAD" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="170" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          </kendo-grid-column>
+          <kendo-grid-column field="STATUS" title="STATUS" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.IBM_TECHNICAL_LEAD}}">{{dataItem.IBM_TECHNICAL_LEAD}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="PROJECT_HEALTH" title="PROJECT_HEALTH" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="140" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.PROJECT_HEALTH)"></span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="RAG STATUS" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="RISK" title="RISK" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.RISK)"></span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ISSUE" title="ISSUE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.ISSUE)"></span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="DELIVERABLE" title="DELIVERABLE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.DELIVERABLE)"></span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="FIRST_MILESTONE" title="FIRST_MILESTONE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="170" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.FIRST_MILESTONE)"></span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="EFFORT" title="EFFORT" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.EFFORT)"></span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="DEFECT_DEPENDENCY" title="DEFECT_DEPENDENCY" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="170" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.DEFECT_DEPENDENCY)"></span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="ACCOMPLISHMENTS" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="REPORTINGWEEK" title="REPORTINGWEEK" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="400" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.REPORTINGWEEK}}">{{dataItem.REPORTINGWEEK}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="CURRENT PHASE" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="PHASE" title="PHASE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.PHASE}}">{{dataItem.PHASE}}</span>
+            </ng-template>
+            <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+              <kendo-autocomplete [data]="PhaseList" class="countries" [(ngModel)]='dataItem.PHASE'>
+              </kendo-autocomplete>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="MILESTONE_END_DATE" title="MILESTONE_END_DATE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="170" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.MILESTONE_END_DATE}}">{{dataItem.MILESTONE_END_DATE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="DELIVERABLE1" title="DELIVERABLE1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.DELIVERABLE1}}">{{dataItem.DELIVERABLE1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="BASELINE_EFFORT_FTE" title="BASELINE_EFFORT_FTE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="170" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.BASELINE_EFFORT_FTE}}">{{dataItem.BASELINE_EFFORT_FTE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ACTUAL_EFFORT_FTE" title="ACTUAL_EFFORT_FTE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="160" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.ACTUAL_EFFORT_FTE}}">{{dataItem.ACTUAL_EFFORT_FTE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ETC" title="ETC" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.ETC}}">{{dataItem.ETC}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="EAC" title="EAC" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.EAC}}">{{dataItem.EAC}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="DEPLOYMENT DATES" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(149, 50, 35)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="SIT" title="SIT" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(149, 50, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.SIT}}">{{dataItem.SIT}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="UAT" title="UAT" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(149, 50, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.UAT}}">{{dataItem.UAT}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="PROD" title="PROD" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(149, 50, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.PROD}}">{{dataItem.PROD}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="PROJECT BASELINE EFFORT" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(86, 55, 87)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="BASELINE" title="BASELINE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(86, 55, 87)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.BASELINE}}">{{dataItem.BASELINE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ACTUALS" title="ACTUALS" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(86, 55, 87)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.ACTUALS}}">{{dataItem.ACTUALS}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ETC1" title="ETC1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(86, 55, 87)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.ETC1}}">{{dataItem.ETC1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="EAC1" title="EAC1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(86, 55, 87)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.EAC1}}">{{dataItem.EAC1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="COMMENTS" title="COMMENTS" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(86, 55, 87)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.COMMENTS}}">{{dataItem.COMMENTS}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="RAG-DETAIL STATUS" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="RISK1" title="RISK1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.RISK1}}">{{dataItem.RISK1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ISSUE1" title="ISSUE1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.ISSUE1}}">{{dataItem.ISSUE1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="DELIVERABLE2" title="DELIVERABLE2" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.DELIVERABLE2}}">{{dataItem.DELIVERABLE2}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="SECOND_MILESTONE" title="SECOND_MILESTONE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.SECOND_MILESTONE}}">{{dataItem.SECOND_MILESTONE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="EFFORT1" title="EFFORT1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.EFFORT1}}">{{dataItem.EFFORT1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="DEFECT_DEPENDENCY1" title="DEFECT_DEPENDENCY1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.DEFECT_DEPENDENCY1}}">{{dataItem.DEFECT_DEPENDENCY1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="CR" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="CR" title="CR" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.CR}}">{{dataItem.CR}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="PIR" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="PIR_Duration" title="PIR_Duration" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.PIR_Duration}}">{{dataItem.PIR_Duration}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="NEXT WEEK PLAN" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(149, 50, 35)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="Planned_Activities" title="Planned_Activities" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="400" [headerStyle]="{'background-color': 'rgb(149, 50, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.Planned_Activities}}">{{dataItem.Planned_Activities}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+        <kendo-grid-excel fileName="WSRDATA.xlsx"></kendo-grid-excel>
+      </kendo-grid>
+    </div>
+  </div>
+</div>
+<div *ngIf="!validate">
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+      <a href="#WSRDATA" role="tab" data-toggle="tab">Weekly Status Report</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane fade in active" id="WSRDATA">
+      <kendo-grid [data]="gridData" style="width:device-width; position:relative; max-height: calc(100vh - (200px));"
+        [pageSize]="gridState.take" [skip]="gridState.skip" class="grid-height-for-ie" [sort]="gridState.sort" [filter]="gridState.filter"
+        filterable="menu" [sortable]="true" [scrollable]="true" [resizable]="true" (dataStateChange)="onStateChange($event)"
+        (edit)="editHandler($event)" (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
+        textalign="center" [columnMenu]="true" (add)="addHandler($event)" [navigable]="true" [reorderable]="true"
+        (cellClick)="cellClickHandler($event)">
+
+        <ng-template kendoGridToolbarTemplate>
+          <button style="margin-left: 25px;width:100px" class=" btn btn-success" kendoGridAddCommand>Add new</button>
+          <button type="button" kendoGridExcelCommand icon="file-excel">Weekly Status Report Download</button>
+          <button type="button" style="float:right;width:100px" [class.disabled]="isClickedOnce" class=" btn btn-primary"
+            (click)="Upload()">Upload</button>
+          <input type="file" class="form-control" #myInput placeholder="Select File" name="filename" (change)="incomingfile($event)"
+            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+            style="width:350px;float:right;margin-right:25px" />
+        </ng-template>
+
+        <kendo-grid-column-group title="Command" [hidden]="hidden" [locked]="true" [columnMenu]="false" class="position"
+          [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-command-column title="Operation" [locked]="true" [columnMenu]="false" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+              <span *ngIf='CRUDOperation(dataItem,isNew)'>
+                <button kendoGridEditCommand [primary]="true">Edit</button>
+                <button kendoGridRemoveCommand>Delete</button>
+                <button kendoGridSaveCommand [disabled]="formGroup?.invalid">{{ isNew ? 'Add' : 'Update' }}</button>
+                <button kendoGridCancelCommand>{{ isNew ? 'Discard changes' : 'Cancel' }}</button>
+              </span>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title=" " [columnMenu]="false" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="SDN_eSDN" title="SDN_eSDN" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="130" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.SDN_eSDN}}">{{dataItem.SDN_eSDN}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="SDN_No" title="SDN_No" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="140" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="HIGH LEVEL - SUMMARY OF STATUS" class="position" [reorderable]="false"
+          [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="TITLE" title="TITLE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.TITLE}}">{{dataItem.TITLE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="REPORTING_DATE" title="REPORTING_DATE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.REPORTING_DATE}}" class="whole-cells" [style.backgroundColor]="colorweekCode(dataItem.REPORTING_DATE)">{{dataItem.REPORTING_DATE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="CODE_CONVERSION" title="CODE_CONVERSION" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="170" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.CODE_CONVERSION}}">{{dataItem.CODE_CONVERSION}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="PROJECT_MANAGER" title="PROJECT_MANAGER" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="160" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.PROJECT_MANAGER}}">{{dataItem.PROJECT_MANAGER}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="IBM_PROJECT_LEAD" title="IBM_PROJECT_LEAD" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="150" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.IBM_PROJECT_LEAD}}">{{dataItem.IBM_PROJECT_LEAD}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="IBM_TECHNICAL_LEAD" title="IBM_TECHNICAL_LEAD" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="170" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          </kendo-grid-column>
+          <kendo-grid-column field="STATUS" title="STATUS" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.IBM_TECHNICAL_LEAD}}">{{dataItem.IBM_TECHNICAL_LEAD}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="PROJECT_HEALTH" title="PROJECT_HEALTH" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="140" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.PROJECT_HEALTH)"></span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="RAG STATUS" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="RISK" title="RISK" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.RISK)"></span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ISSUE" title="ISSUE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.ISSUE)"></span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="DELIVERABLE" title="DELIVERABLE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.DELIVERABLE)"></span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="FIRST_MILESTONE" title="FIRST_MILESTONE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="170" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.FIRST_MILESTONE)"></span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="EFFORT" title="EFFORT" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.EFFORT)"></span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="DEFECT_DEPENDENCY" title="DEFECT_DEPENDENCY" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="170" class="no-padding" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.DEFECT_DEPENDENCY)"></span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="ACCOMPLISHMENTS" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="REPORTINGWEEK" title="REPORTINGWEEK" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="400" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.REPORTINGWEEK}}">{{dataItem.REPORTINGWEEK}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="CURRENT PHASE" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="PHASE" title="PHASE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.PHASE}}">{{dataItem.PHASE}}</span>
+            </ng-template>
+            <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+              <kendo-autocomplete [data]="PhaseList" class="countries" [(ngModel)]='dataItem.PHASE'>
+              </kendo-autocomplete>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="MILESTONE_END_DATE" title="MILESTONE_END_DATE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="170" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.MILESTONE_END_DATE}}">{{dataItem.MILESTONE_END_DATE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="DELIVERABLE1" title="DELIVERABLE1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.DELIVERABLE1}}">{{dataItem.DELIVERABLE1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="BASELINE_EFFORT_FTE" title="BASELINE_EFFORT_FTE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="170" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.BASELINE_EFFORT_FTE}}">{{dataItem.BASELINE_EFFORT_FTE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ACTUAL_EFFORT_FTE" title="ACTUAL_EFFORT_FTE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="160" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.ACTUAL_EFFORT_FTE}}">{{dataItem.ACTUAL_EFFORT_FTE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ETC" title="ETC" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.ETC}}">{{dataItem.ETC}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="EAC" title="EAC" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.EAC}}">{{dataItem.EAC}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="DEPLOYMENT DATES" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(149, 50, 35)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="SIT" title="SIT" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(149, 50, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.SIT}}">{{dataItem.SIT}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="UAT" title="UAT" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(149, 50, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.UAT}}">{{dataItem.UAT}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="PROD" title="PROD" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(149, 50, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.PROD}}">{{dataItem.PROD}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="PROJECT BASELINE EFFORT" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(86, 55, 87)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="BASELINE" title="BASELINE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(86, 55, 87)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.BASELINE}}">{{dataItem.BASELINE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ACTUALS" title="ACTUALS" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(86, 55, 87)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.ACTUALS}}">{{dataItem.ACTUALS}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ETC1" title="ETC1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(86, 55, 87)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.ETC1}}">{{dataItem.ETC1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="EAC1" title="EAC1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="100" [headerStyle]="{'background-color': 'rgb(86, 55, 87)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.EAC1}}">{{dataItem.EAC1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="COMMENTS" title="COMMENTS" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(86, 55, 87)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.COMMENTS}}">{{dataItem.COMMENTS}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="RAG-DETAIL STATUS" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="RISK1" title="RISK1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.RISK1}}">{{dataItem.RISK1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ISSUE1" title="ISSUE1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.ISSUE1}}">{{dataItem.ISSUE1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="DELIVERABLE2" title="DELIVERABLE2" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.DELIVERABLE2}}">{{dataItem.DELIVERABLE2}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="SECOND_MILESTONE" title="SECOND_MILESTONE" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.SECOND_MILESTONE}}">{{dataItem.SECOND_MILESTONE}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="EFFORT1" title="EFFORT1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.EFFORT1}}">{{dataItem.EFFORT1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="DEFECT_DEPENDENCY1" title="DEFECT_DEPENDENCY1" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(84, 110, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.DEFECT_DEPENDENCY1}}">{{dataItem.DEFECT_DEPENDENCY1}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="CR" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="CR" title="CR" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="200" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.CR}}">{{dataItem.CR}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="PIR" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="PIR_Duration" title="PIR_Duration" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="120" [headerStyle]="{'background-color': 'rgb(35, 83, 162)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.PIR_Duration}}">{{dataItem.PIR_Duration}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+
+        <kendo-grid-column-group title="NEXT WEEK PLAN" class="position" [reorderable]="false" [headerStyle]="{'background-color': 'rgb(149, 50, 35)','color': '#fff','line-height': '0.8em','font-size': 'medium', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+          <kendo-grid-column field="Planned_Activities" title="Planned_Activities" [style]="{'font-family':'MS Reference Sans Serif','line-height': '1.2em', 'font-size':'x-small','border-color': 'Black', 'border-bottom': '1px solid black','text-align': 'center'}"
+            width="400" [headerStyle]="{'background-color': 'rgb(149, 50, 35)','color': '#fff','line-height': '0.8em','font-size': 'small', 'font-weight': 'bold','font-family':'MS Reference Sans Serif', 'border-color': 'Black','text-align': 'center'}">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span title="{{dataItem.Planned_Activities}}">{{dataItem.Planned_Activities}}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid-column-group>
+        <kendo-grid-excel fileName="Weekly Status Report.xlsx"></kendo-grid-excel>
+      </kendo-grid>
+    </div>
+  </div>
+</div>

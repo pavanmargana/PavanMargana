@@ -1,0 +1,14 @@
+<nav class="navbar  bg-dark rounded">  
+    <ul class="navbar-nav mr-auto">     
+      <li [routerLinkActive]="['active']">
+        <h3>
+        <a class="nav-link" style="color:#fff" routerLink="WSRDATA">Weekly Status Report</a>
+      </h3>
+      </li>       
+    </ul> 
+    <ul class="navbar-nav ml-auto">        
+        <li class="navbar-item">
+            <button class=" btn btn-success" (click)="Logout()">Logout</button>
+        </li>
+      </ul>
+</nav>
