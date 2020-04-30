@@ -65,7 +65,7 @@
     "express": "^4.16.4",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "mongoose": "^5.4.1",
     "npm": "^6.6.0-next.1",
     "popper.js": "^1.14.6",
